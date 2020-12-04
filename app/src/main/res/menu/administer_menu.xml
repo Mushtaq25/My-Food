@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="search"
+        app:showAsAction="ifRoom">
+    </item>
+    <item   android:id="@+id/administer"
+        android:title="Administer"
+        app:showAsAction="never"
+        >
+    </item>
+    <item
+        android:id="@+id/seller"
+        android:title="Seller"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/new_seller"
+                android:title="New Seller"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/existing_seller"
+                android:title="Existing_Seller"
+                app:showAsAction="never">
+            </item>
+
+        </menu>
+    </item>
+</menu>
