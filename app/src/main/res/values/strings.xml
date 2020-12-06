@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">My FOOD</string>
     <string name="my_food">My Food</string>
-
+    <string name="thankyou">THANK-YOU For Joining To Our Community</string>
+    <string name="GuidelinesForNewSeller">1.Your account and details will get verified by the administer.\n\n2.We will get you in touch 2-3 days please check your emails.\n\n 3.After the verification is done We will send you a code in your email that will be used for your login.\n\n4.Please Verify Your Email Address by Log-In to your Official-account.\n\n5.Next click On Existing-seller to Access your My-FOOD Profile\n\n6.Contact number admin-8471984341,Email- islammushtaq@gmail.com </string>
     <string name="district">Choose a District</string>
 
     <string-array name="district_arrays">
@@ -9,6 +10,17 @@
         <item>Dhubri</item>
         <item>Guwahati</item>
         <item>Bongaigaon</item>
+    </string-array>
+    <string-array name="veg_nonveg">
+        <item>Veg</item>
+        <item>Non-Veg</item>
+    </string-array>
+
+    <string-array name="food_category">
+        <item>Drinks</item>
+        <item>Fast Food</item>
+        <item>Sweets</item>
+        <item>Bakery</item>
     </string-array>
 
 </resources>

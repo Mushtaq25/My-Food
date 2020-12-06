@@ -1,10 +1,31 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#B7EEBFBF</item>
+        <item name="colorPrimaryDark">#CDA55E5E</item>
+        <item name="colorAccent">#03DAC5</item>
     </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorAccent">@color/dialogButtonText</item>
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryDark">#E91E63</item>
+    </style>
+
+    <style name="Theme.App" parent="Theme.MaterialComponents">
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+    </style>
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>
+        <item name="hintTextColor">@color/blue_violet</item>
+    </style>
+    <style name="ThemeOverlay.App.TextInputLayout" parent="">
+        <item name="colorPrimary">@color/blue_violet</item>
+        <item name="colorOnSurface">@color/dark_blue</item>
+        <item name="colorError">@color/orange_red</item>
+    </style>
+
+
 
 </resources>

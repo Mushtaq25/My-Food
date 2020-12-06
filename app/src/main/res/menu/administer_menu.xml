@@ -6,7 +6,16 @@
         android:id="@+id/search"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="search"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView">
+    </item>
+    <item
+        android:id="@+id/btn_back"
+        android:icon="@drawable/ic_baseline_arrow_back_24"
+        app:showAsAction="always"
+        android:title="back"
+        android:visible="true">
+
     </item>
     <item   android:id="@+id/administer"
         android:title="Administer"

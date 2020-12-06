@@ -4,56 +4,1194 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF6F6"
+    android:layout_alignParentEnd="false"
+    android:layout_gravity="center"
+    android:background="@drawable/lightpinkbackground"
     android:clickable="true"
     android:contextClickable="true"
-    tools:context=".Home">
+    tools:context="com.example.myfood.Home">
 
     <LinearLayout
-        android:id="@+id/top_bar"
+        android:id="@+id/existing_seller_all_item_LL"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:background="#B7DFC6C6"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/lightpinkbackground"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:visibility="gone"
+        tools:visibility="gone">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="87dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:padding="3dp"
-            app:srcCompat="@drawable/logo" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/existing_seller_addItem_LL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:visibility="gone"
+        tools:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:gravity="right|end"
-            android:orientation="horizontal">
+            android:layout_margin="5dp"
+            android:background="@color/floral_white"
+            android:gravity="start|left"
+            android:orientation="vertical"
+            android:padding="4dp">
 
-            <ImageView
-                android:id="@+id/search"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_baseline_search_24" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Item Images"
+                android:textColor="#223D0C"
+                android:textColorHighlight="#D05858"
+                android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/logout"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:contextClickable="true"
-                android:hapticFeedbackEnabled="false"
-                app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:gravity="start|left"
+                android:orientation="horizontal"
+                android:padding="3dp">
+
+                <ImageView
+                    android:id="@+id/item_imageView1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_baseline_add_24" />
+
+                <ImageView
+                    android:id="@+id/item_imageView2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_baseline_add_24" />
+
+                <ImageView
+                    android:id="@+id/item_imageView3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_baseline_add_24" />
+
+                <ImageView
+                    android:id="@+id/item_imageView4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_baseline_add_24" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/existing_seller_item_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="#FFFFFF"
+                android:gravity="start"
+                android:hint="ITEM name"
+                android:inputType="textAutoCorrect"
+                android:padding="12dp"
+                app:boxStrokeColor="#00BCD4"
+                app:endIconMode="clear_text"
+                app:hintTextColor="#2196F3">
+
+            </EditText>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/existing_seller_item_description"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|left"
+                android:hint="ITEM description"
+                android:padding="12dp"
+                app:boxStrokeColor="#00BCD4"
+                app:endIconMode="clear_text"
+                app:hintTextColor="#2196F3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:background="#FFFFFF"
+                    android:gravity="start|left"
+                    android:inputType="textUri|textAutoCorrect|textMultiLine|textImeMultiLine"
+                    android:textSize="20dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/existing_seller_item_cook_time"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Item Cook Time"
+                android:padding="12dp"
+                app:boxStrokeColor="#00BCD4"
+                app:endIconMode="clear_text"
+                app:hintTextColor="#2196F3"
+                app:suffixText="minute">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:inputType="number"
+                    android:textSize="20dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/existing_seller_item_price"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="ITEM price"
+                android:padding="12dp"
+                app:boxStrokeColor="#00BCD4"
+                app:endIconMode="clear_text"
+                app:hintTextColor="#2196F3"
+                app:prefixText="Rs.">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:inputType="number|numberDecimal"
+                    android:textSize="20dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Spinner
+                android:id="@+id/veg_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="left"
+                android:layout_margin="3dp"
+                android:entries="@array/veg_nonveg"
+                android:gravity="center"
+                android:spinnerMode="dropdown" />
+
+            <Spinner
+                android:id="@+id/food_category"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="left"
+                android:layout_margin="3dp"
+                android:entries="@array/food_category"
+                android:gravity="center"
+                android:spinnerMode="dropdown" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="end|right"
+                android:layoutDirection="ltr"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_existing_seller_add_item_cancel"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Cancel"
+                    android:textColor="@color/blue_violet"
+                    app:strokeColor="@color/blue_violet" />
+
+                <Button
+                    android:id="@+id/btn_existing_seller_add_item_ok"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingRight="8dp"
+                    android:text="OK"
+                    android:textColor="@color/blue_violet"
+                    app:strokeColor="@color/blue_violet" />
+
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/existing_seller_profile_LL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/lightpinkbackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/lightpinkbackground"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+                    <ImageView
+                        android:id="@+id/existing_seller_store_photo_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/image_load_24" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|left"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="1dp"
+                        android:text="Store Photo"
+                        android:textColor="#E91E63"
+                        android:textColorHighlight="#272323"
+                        android:textColorHint="#232020"
+                        android:textSize="24sp"
+                        android:textStyle="normal" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_existing_seller_store_photo"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_edit_existing_seller_store_photo"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        app:icon="@drawable/ic_baseline_edit_24"
+                        app:iconGravity="end"
+                        app:iconSize="30dp"
+                        app:iconTint="@color/deep_pink" />
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="fill_vertical"
+                    android:orientation="vertical"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="3dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardElevation="20dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:cardUseCompatPadding="false"
+                        app:contentPadding="5dp">
+
+                        <Button
+                            android:id="@+id/btn_edit_existing_seller_information2"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|bottom"
+                            android:layout_weight="1"
+                            android:visibility="invisible"
+                            app:cornerRadius="5dp"
+                            app:icon="@drawable/ic_baseline_arrow_drop_up_24"
+                            app:iconGravity="end"
+                            app:iconSize="30dp"
+                            app:iconTint="@color/deep_pink"
+                            tools:visibility="invisible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_existing_seller_store_name"
+                                style="@style/Widget.MaterialComponents.MaterialCalendar.DayTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|start"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="TextView"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                android:textColor="#600C0C"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@+id/btn_edit_existing_seller_store_name"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:textSize="8sp"
+                                app:icon="@drawable/ic_baseline_edit_24"
+                                app:iconGravity="textEnd"
+                                app:iconPadding="5dp"
+                                app:iconSize="20dp"
+                                app:iconTint="@color/deep_pink" />
+
+                            <Button
+                                android:id="@+id/btn_edit_existing_seller_information"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|bottom"
+                                app:cornerRadius="5dp"
+                                app:icon="@drawable/ic_baseline_arrow_drop_down_24"
+                                app:iconGravity="end"
+                                app:iconSize="30dp"
+                                app:iconTint="@color/deep_pink"
+                                tools:visibility="visible" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_existing_seller_information"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="20dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:cardUseCompatPadding="false"
+                        app:contentPadding="7dp"
+                        tools:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center|left"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center|left"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_existing_seller_store_owner_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="start"
+                                    android:text="TextView"
+                                    android:textSize="18sp" />
+
+                                <Button
+                                    android:id="@+id/btn_edit_existing_seller_store_owner_name"
+                                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:gravity="top"
+                                    android:textSize="8sp"
+                                    app:icon="@drawable/ic_baseline_edit_24"
+                                    app:iconGravity="textEnd"
+                                    app:iconPadding="0dp"
+                                    app:iconSize="20dp"
+                                    app:iconTint="@color/deep_pink" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center|left"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_existing_seller_location"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="start"
+                                    android:text="TextView"
+                                    android:textSize="18sp" />
+
+                                <Button
+                                    android:id="@+id/btn_edit_existing_seller_location"
+                                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:gravity="top"
+                                    android:textSize="8sp"
+                                    app:icon="@drawable/ic_baseline_edit_24"
+                                    app:iconGravity="textEnd"
+                                    app:iconPadding="0dp"
+                                    app:iconSize="20dp"
+                                    app:iconTint="@color/deep_pink" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_existing_seller_phone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|left"
+                                    android:layout_weight="1"
+                                    android:gravity="start"
+                                    android:text="TextView"
+                                    android:textSize="18sp" />
+
+                                <Button
+                                    android:id="@+id/btn_edit_existing_seller_phone"
+                                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:gravity="top"
+                                    android:textSize="8sp"
+                                    app:icon="@drawable/ic_baseline_edit_24"
+                                    app:iconGravity="textEnd"
+                                    app:iconPadding="0dp"
+                                    app:iconSize="20dp"
+                                    app:iconTint="@color/deep_pink" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_existing_seller_pincode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|left"
+                                    android:layout_weight="1"
+                                    android:gravity="start"
+                                    android:text="TextView"
+                                    android:textSize="18sp" />
+
+                                <Button
+                                    android:id="@+id/btn_edit_existing_seller_pincode"
+                                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:gravity="top"
+                                    android:textSize="8sp"
+                                    app:icon="@drawable/ic_baseline_edit_24"
+                                    app:iconGravity="textEnd"
+                                    app:iconPadding="0dp"
+                                    app:iconSize="20dp"
+                                    app:iconTint="@color/deep_pink" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_existing_seller_pancard"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|left"
+                                    android:layout_weight="1"
+                                    android:gravity="start"
+                                    android:text="TextView"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/btn_existing_seller_password_change"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Password change"
+                                android:textColor="#00BCD4"
+                                android:textSize="14sp"
+                                app:icon="@drawable/ic_baseline_edit_24"
+                                app:iconGravity="textEnd"
+                                app:iconPadding="5dp"
+                                app:iconSize="20dp"
+                                app:iconTint="@color/deep_pink" />
+
+                            <Button
+                                android:id="@+id/btn_existing_seller_pin_change"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PIN change"
+                                android:textColor="#00BCD4"
+                                android:textSize="14sp"
+                                app:icon="@drawable/ic_baseline_edit_24"
+                                app:iconGravity="textEnd"
+                                app:iconPadding="05dp"
+                                app:iconSize="20dp"
+                                app:iconTint="@color/deep_pink" />
+
+                            <Button
+                                android:id="@+id/btn_existing_seller_log_out"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="LOG OUT"
+                                android:textColor="#00BCD4"
+                                android:textSize="14sp"
+                                app:icon="@drawable/ic_baseline_lock_24"
+                                app:iconGravity="textEnd"
+                                app:iconPadding="05dp"
+                                app:iconSize="20dp"
+                                app:iconTint="@color/deep_pink" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cv_existing_seller_information"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="3dp"
+                        android:text="Store opening Time/closing Time "
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="normal" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
+
+                        <EditText
+                            android:id="@+id/existingseller_store_open_time"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:layout_weight="2"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:hint="open Time"
+                            android:inputType="number"
+                            android:padding="3dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:hintTextColor="@color/blue">
+
+                        </EditText>
+
+                        <EditText
+                            android:id="@+id/existingseller_store_close_time"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:layout_weight="2"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:hint="close Time"
+                            android:inputType="number"
+                            android:padding="3dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:hintTextColor="@color/blue">
+
+                        </EditText>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="#F3E4E4"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="clip_horizontal|center|clip_vertical"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/existing_seller_Add_item_iv"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_margin="5dp"
+                            android:padding="5dp"
+                            app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Add Item"
+                            android:textColor="#F15C5C"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/existing_seller_loginpage_LL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:layout_alignParentTop="false"
+        android:background="@drawable/lightpinkbackground"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="#23FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/existing_seller_email_ET"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:hint="Email"
+                        android:padding="12dp"
+                        app:boxStrokeColor="#00BCD4"
+                        app:endIconMode="clear_text"
+                        app:hintTextColor="#2196F3">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/existing_seller_password_ET"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:padding="12dp"
+                        app:boxStrokeColor="#00BCD4"
+                        app:endIconMode="password_toggle"
+                        app:hintTextColor="#2196F3">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/existing_seller_pin_ET"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="PIN"
+                        android:padding="12dp"
+                        app:boxStrokeColor="#00BCD4"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="4"
+                        app:endIconMode="password_toggle"
+                        app:helperText='Provided by the administer to your registered email'
+                        app:hintTextColor="#2196F3">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ProgressBar
+                        android:id="@+id/existing_seller_progressbar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right">
+
+                        <Button
+                            android:id="@+id/btn_existing_seller_forgot"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Forget pin/password"
+                            android:textColor="@color/cornflower_blue" />
+
+                        <Button
+                            android:id="@+id/btn_existing_seller_cancel"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="7dp"
+                            android:gravity="center"
+                            android:text="Cancel"
+                            android:textColor="@color/blue_violet"
+                            app:strokeColor="@color/blue_violet" />
+
+                        <Button
+                            android:id="@+id/btn_existing_seller_ok"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingRight="8dp"
+                            android:text="OK"
+                            android:textColor="@color/blue_violet"
+                            app:strokeColor="@color/blue_violet" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/last_page_for_newseller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:layout_below="@id/LL1"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="1dp"
+        android:background="#CEFBF7F7"
+        android:gravity="clip_horizontal|center|clip_vertical|top"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/Widget.AppCompat.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00F8F6F6"
+                    android:elevation="20dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center|top"
+                    android:text="@string/thankyou"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#0B7C66"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/congo" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:gravity="start|fill_vertical"
+                    android:text="@string/GuidelinesForNewSeller"
+                    android:textColor="#1C0101"
+                    android:textSize="18sp"
+                    tools:text="@string/GuidelinesForNewSeller" />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/new_seller_documentUpload_LL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:layout_below="@id/LL1"
+        android:background="#CEFBF7F7"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_horizontal|fill"
+                android:orientation="vertical">
+                // Adding store photo button in new seller
+
+                <ImageView
+                    android:id="@+id/iv_store_photo"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="TODO"
+                    app:srcCompat="@drawable/image_load_24" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <Button
+                        android:id="@+id/btn_upload_store_photo"
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Upload Store Photo"
+                        android:textColor="@color/dark_blue"
+                        app:backgroundTint="@color/light_pink"
+                        app:elevation="3dp"
+                        app:icon="@drawable/ic_baseline_add_24"
+                        app:iconTint="@color/orange_red" />
+
+                    <ProgressBar
+                        android:id="@+id/progressbar_store_photo"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center|end"
+                        android:elevation="10dp"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+                </LinearLayout>
+
+                // Adding store pancard button in new seller
+
+                <ImageView
+                    android:id="@+id/iv_store_owner_pancard"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    app:srcCompat="@drawable/image_load_24" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <Button
+                        android:id="@+id/btn_upload_owner_pancard_photo"
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Upload Pancard"
+                        android:textColor="@color/dark_blue"
+                        app:backgroundTint="@color/light_pink"
+                        app:elevation="3dp"
+                        app:icon="@drawable/ic_baseline_add_24"
+                        app:iconTint="@color/orange_red" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_store_pancard"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center|end"
+                        android:elevation="10dp"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_submit_for_new_seller_documents"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:checkable="true"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="FINISH"
+                    android:textColor="@color/alice_blue"
+
+                    app:backgroundTint="@color/medium_slate_blue"
+                    app:cornerRadius="22dp"
+                    app:elevation="10dp"
+                    app:icon="@drawable/ic_baseline_check_24"
+                    app:iconTint="@color/wheat" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/new_seller_LL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:layout_below="@id/LL1"
+        android:background="#CEFBF7F7"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:paddingVertical="3dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/store_name"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Store name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/store_owner_name"
+                        style="@style/Widget.App.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Store owner name">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/store_Email_address"
+                        style="@style/Widget.App.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Store E-mail">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/store_location"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Store Location">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/store_phone_number"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Store contact number"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="10"
+                    app:helperText="Given Phone-Number should be always ON for customers"
+                    app:helperTextEnabled="true"
+                    app:prefixText="+91  "
+                    app:prefixTextColor="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/store_password"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="password"
+                    app:counterEnabled="true"
+                    app:endIconMode="password_toggle"
+                    app:helperText="Password length min 8"
+                    app:helperTextEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/store_pincode"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Store pincode"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="6">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                // Adding store submit button in new seller
+
+                <ProgressBar
+                    android:id="@+id/progressBar_newseller"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:visibility="gone"
+                    tools:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_submit_for_new_seller"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:gravity="center"
+                    android:text="SUBMIT"
+                    android:textColor="@color/black"
+                    app:backgroundTint="@color/medium_orchid"
+                    app:elevation="3dp"
+                    app:icon="@drawable/ic_baseline_check_24"
+                    app:iconTint="@color/wheat"
+
+                    />
+
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="false"
         android:layout_alignParentBottom="true"
         android:background="#B7DFC6C6"
@@ -82,10 +1220,13 @@
         android:id="@+id/LL1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top_bar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:gravity="top"
         android:orientation="vertical"
-        android:paddingBottom="4dp">
+        android:paddingBottom="4dp"
+        android:visibility="visible"
+        tools:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -116,14 +1257,30 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
             app:cardCornerRadius="10dp"
-            app:cardElevation="1dp"
+            app:cardElevation="5dp"
             app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true">>
+            app:cardUseCompatPadding="true"><![CDATA[>
+
+            ]]>
+
+            <TextView
+                android:id="@+id/fill_the_form_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Fill-up the Form Below"
+                android:textColor="#592929"
+                android:textSize="24sp"
+                android:textStyle="bold|italic"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/location_LL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#ABDCD1D1"
@@ -163,15 +1320,18 @@
 
     </LinearLayout>
 
-    <ImageButton
+    <TextView
         android:id="@+id/Zafir"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/LL1"
-        android:layout_centerInParent="false"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="WELCOME!! To Goalpara.Please wait your App is getting READY."
+        android:textSize="18sp"
+        android:textStyle="normal|italic"
         android:visibility="invisible"
-        app:srcCompat="@drawable/ic_baseline_person_outline_24"
-        tools:visibility="invisible" />
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_Not_available"
@@ -189,6 +1349,6 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:visibility="invisible"
-        tools:visibility="invisible" />
+        tools:visibility="gone" />
 
 </RelativeLayout>

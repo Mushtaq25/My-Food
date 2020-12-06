@@ -74,7 +74,7 @@
                     android:id="@+id/tv_item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="qwerty"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
@@ -82,8 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="monkey"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
@@ -91,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
@@ -99,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
@@ -107,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
@@ -115,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -132,13 +131,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="action_1" />
+                    android:text="Edit Item"
+                    android:textColor="@color/medium_violet_red"/>
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_delete_existing_seller"
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="action_2" />
+                    android:text="Delete Item"
+                    android:textColor="@color/medium_violet_red"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:padding="4dp"
+                    android:layout_gravity="end"
+                    android:text="Display"/>
             </LinearLayout>
 
         </LinearLayout>
