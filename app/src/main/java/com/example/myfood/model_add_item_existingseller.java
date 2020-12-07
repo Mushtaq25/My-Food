@@ -3,7 +3,7 @@ package com.example.myfood;
 public class model_add_item_existingseller {
 
     private String Item_Price,Type,category,imagelinkitem1,imagelinkitem2,
-            imagelinkitem3,imagelinkitem4,item_cooktime,item_description,item_name;
+            imagelinkitem3,imagelinkitem4,item_cooktime,item_description,item_name,Product_Id;
 
     public model_add_item_existingseller(){
 
@@ -20,6 +20,15 @@ public class model_add_item_existingseller {
         this.item_cooktime = item_cooktime;
         this.item_description = item_description;
         this.item_name = item_name;
+        this.Product_Id = Product_Id;
+    }
+
+    public String getProduct_Id() {
+        return Product_Id;
+    }
+
+    public void setProduct_Id(String product_Id) {
+        Product_Id = product_Id;
     }
 
     public String getItem_Price() {

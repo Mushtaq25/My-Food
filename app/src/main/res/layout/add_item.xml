@@ -116,6 +116,13 @@
                     android:layout_marginTop="16dp"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/Product_Id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -126,13 +133,14 @@
                 android:layout_margin="8dp"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    style="?attr/borderlessButtonStyle"
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/display_item"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="Edit Item"
-                    android:textColor="@color/medium_violet_red"/>
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:checked="false"
+                    android:padding="4dp"
+                    android:text="Display" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_delete_existing_seller"
@@ -142,13 +150,13 @@
                     android:text="Delete Item"
                     android:textColor="@color/medium_violet_red"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.button.MaterialButton
+                    style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:checked="true"
-                    android:padding="4dp"
-                    android:layout_gravity="end"
-                    android:text="Display"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Edit Item"
+                    android:textColor="@color/medium_violet_red" />
             </LinearLayout>
 
         </LinearLayout>

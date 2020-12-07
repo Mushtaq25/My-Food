@@ -82,8 +82,8 @@ public class Home extends AppCompatActivity {
     TextView tv_Not_available,tv_Zafir,fill_up_the_form_tv;
     Spinner district;
     Button btn_submit_for_new_seller,btn_submit_for_new_seller_documents,btn_upload_store_photo,btn_upload_owner_pancard_photo;
-    LinearLayout LL1,location_LL,new_seller_LL,new_seller_documentUpload_LL,last_page_for_newseller,existing_seller_profile_LL,existing_seller_all_item_LL;
-    ScrollView existing_seller_loginpage_LL,existing_seller_addItem_LL;
+    LinearLayout LL1,location_LL,new_seller_LL,new_seller_documentUpload_LL,last_page_for_newseller;
+    ScrollView existing_seller_loginpage_LL;
     ProgressBar progressBar_newseller,progressBar_store_pancard,progressbar_store_photo;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -91,8 +91,7 @@ public class Home extends AppCompatActivity {
     FirebaseFirestore fstore;
     StorageReference mStorageRef;
     adapter_additem_existingseller myAdapter;
-
-    RecyclerView myrecyclerView;
+    FirebaseAuth.AuthStateListener mAuthListener;
 
     TimePickerDialog picker;
 
@@ -132,120 +131,63 @@ public class Home extends AppCompatActivity {
             Uri imageuri = data.getData();
             upload_pancard_imageTO_firebase(imageuri);
         }
-        if (requestCode == 3000 && resultCode == Activity.RESULT_OK) {
-            Uri imageuri = data.getData();
-            ImageView item_imageView1 = (ImageView) findViewById(R.id.item_imageView1);
-            String item1 = new String("item1");
-            upload_item_imageTO_firebase(imageuri,item1,item_imageView1);
-        }
-        if (requestCode == 3001 && resultCode == Activity.RESULT_OK) {
-            Uri imageuri = data.getData();
-            final ImageView item_imageView2 = (ImageView) findViewById(R.id.item_imageView2);
-            String item2 = new String("item2");
-            upload_item_imageTO_firebase(imageuri,item2,item_imageView2);
-        }
-        if (requestCode == 3002 && resultCode == Activity.RESULT_OK) {
-            Uri imageuri = data.getData();
-            final ImageView item_imageView3 = (ImageView) findViewById(R.id.item_imageView3);
-            String item3 = new String("item3");
-            upload_item_imageTO_firebase(imageuri,item3,item_imageView3);
-        }
-        if (requestCode == 3003 && resultCode == Activity.RESULT_OK) {
-            Uri imageuri = data.getData();
-            final ImageView item_imageView4 = (ImageView) findViewById(R.id.item_imageView4);
-            String item4 = new String("item4");
-            upload_item_imageTO_firebase(imageuri,item4,item_imageView4);
-        }
+
     }
 
-    private void upload_item_imageTO_firebase(Uri imageuri, final String item, final ImageView item_imageView) {
-        final String email = mAuth.getCurrentUser().getEmail();
-        final EditText existing_seller_item_name = (EditText) findViewById(R.id.existing_seller_item_name);
-        final String item_name = existing_seller_item_name.getText().toString().trim();
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Image uploading.........");
-
-        final StorageReference filename = mStorageRef.child("Seller and store personal data/"+ email +"/Store All item images/"+item_name+"/"+item);
-        filename.putFile(imageuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                filename.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).fit().into(item_imageView);
-
-                         String item_image_url = String.valueOf(uri);
-
-                        Map<String,String> user2 = new HashMap<>();
-                        user2.put("imagelink" + item,item_image_url);
-                        fstore.collection("Seller and store personal data")
-                                .document(email).collection("store all Item")
-                                .document(item_name).set(user2,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                progressDialog.dismiss();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(Home.this, "link not created", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
 
 
     //upload seller store photo
     private void upload_store_imageTO_firebase(Uri imageuri) {
-        String email = mAuth.getCurrentUser().getEmail();
-        final StorageReference filename = mStorageRef.child("Seller and store personal data/"+ email +"/store image.jpg");
-        filename.putFile(imageuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                filename.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).fit().into(iv_store_photo);
-                        progressbar_store_photo.setVisibility(View.GONE);
-                    }
-                });
-            }
-        });
+        if (mAuth.getCurrentUser() != null) {
+            String email = mAuth.getCurrentUser().getEmail();
+            final StorageReference filename = mStorageRef.child("Seller and store personal data/" + email + "/store image.jpg");
+            filename.putFile(imageuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filename.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(uri).fit().into(iv_store_photo);
+                            progressbar_store_photo.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            });
+        }
     }
     //upload seller store photo
 //upload seller pancard photo -0
     private void upload_pancard_imageTO_firebase(Uri imageuri) {
-        String email = mAuth.getCurrentUser().getEmail();
-        final StorageReference filename = mStorageRef.child("Seller and store personal data/" + email +"/store pancard.jpg");
-        filename.putFile(imageuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                filename.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).fit().into(iv_store_owner_pancard);
-                        progressBar_store_pancard.setVisibility(View.GONE);
-                    }
-                });
-            }
-        });
+        if (mAuth.getCurrentUser() != null) {
+            String email = mAuth.getCurrentUser().getEmail();
+            final StorageReference filename = mStorageRef.child("Seller and store personal data/" + email + "/store pancard.jpg");
+            filename.putFile(imageuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filename.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(uri).fit().into(iv_store_owner_pancard);
+                            progressBar_store_pancard.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            });
+        }
     }// upload seller pancard photo -1
 
     @Override
     protected void onStart() {
         super.onStart();
-        myAdapter.startListening();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        myAdapter.stopListening();
+        mAuth.removeAuthStateListener(mAuthListener);
+
     }
 
     //private  FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -283,10 +225,6 @@ public class Home extends AppCompatActivity {
         fstore = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         progressBar_newseller = findViewById(R.id.progressBar_newseller);progressbar_store_photo = findViewById(R.id.progressbar_store_photo);progressBar_store_pancard = findViewById(R.id.progressBar_store_pancard);
-        myrecyclerView = findViewById(R.id.my_recycler_view);
-        existing_seller_profile_LL = findViewById(R.id.existing_seller_profile_LL);
-        existing_seller_addItem_LL = findViewById(R.id.existing_seller_addItem_LL);
-        existing_seller_all_item_LL = findViewById(R.id.existing_seller_all_item_LL);
         addListenerOnSpinnerItemSelection();
 
         //setActionBar()
@@ -344,9 +282,6 @@ public class Home extends AppCompatActivity {
                 new_seller_documentUpload_LL.setVisibility(View.GONE);
                 fill_up_the_form_tv.setVisibility(View.GONE);
                 last_page_for_newseller.setVisibility(View.VISIBLE);
-                existing_seller_all_item_LL.setVisibility(View.GONE);
-                existing_seller_addItem_LL.setVisibility(View.GONE);
-                existing_seller_profile_LL.setVisibility(View.GONE);
                 existing_seller_loginpage_LL.setVisibility(View.GONE);
                 last_page_for_newseller.setVisibility(View.GONE);
                 new_seller_documentUpload_LL.setVisibility(View.GONE);
@@ -379,7 +314,6 @@ public class Home extends AppCompatActivity {
                     store_pincode.requestFocus();
                 }
 
-                System.out.println("1");
                 if (!store_Email_address.getEditText().getText().toString().equals("") && !store_password.getEditText().getText().toString().equals("")&& !store_pincode.getEditText().getText().toString().equals("")&& !store_name.getEditText().getText().toString().equals("")&& !store_owner_name.getEditText().getText().toString().equals("")&& !store_location.getEditText().getText().toString().equals("")) {
                     System.out.println("2");
                     progressBar_newseller.setVisibility(View.VISIBLE);
@@ -394,24 +328,6 @@ public class Home extends AppCompatActivity {
                                 String store_email = currentUser.getEmail();
 
                                 //write seller personal information into the database
-
-/*
-                                DocumentReference documentReference = fstore.collection("Seller and store personal data").document(UID);
-                                Map<String,String> user = new HashMap<>();
-                                user.put("store name" ,store_name.getEditText().getText().toString().trim());
-                                user.put("store owner name" ,store_owner_name.getEditText().getText().toString().trim());
-                                user.put("store email address" ,store_Email_address.getEditText().getText().toString().trim());
-                                user.put("store Location" ,store_location.getEditText().getText().toString().trim());
-                                user.put("store contact number" ,store_phone_number.getEditText().getText().toString());
-                                user.put("store pincode" ,store_pincode.getEditText().getText().toString().trim());
-
-                                documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(Home.this, "user created", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-*/
 
                                 Map<String,String> user = new HashMap<>();
                                 user.put("user-ID",user_ID);
@@ -505,33 +421,32 @@ public class Home extends AppCompatActivity {
             }
         });// Pressing Go button start
 
-        //recycler view for existing seller add item -0
-if(mAuth != null){
-    String existing_seller_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-    Query query = fstore
-            .collection("Seller and store personal data")
-            .document(existing_seller_email).collection("store all Item");
-    FirestoreRecyclerOptions<model_add_item_existingseller> options = new FirestoreRecyclerOptions.Builder<model_add_item_existingseller>()
-            .setQuery(query, model_add_item_existingseller.class)
-            .build();
+        mAuthListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user!=null){
+                    System.out.println("User logged in");
+                    TextInputLayout seller_email = (TextInputLayout) findViewById(R.id.existing_seller_email_ET);
+                    TextInputLayout seller_password = (TextInputLayout) findViewById(R.id.existing_seller_password_ET);
+                    TextInputLayout existing_seller_pin = (TextInputLayout) findViewById(R.id.existing_seller_pin_ET);
+                    seller_email.getEditText().setText("islammushtaq@gmail.com");
+                    seller_password.getEditText().setText("qwerty1234");
+                    existing_seller_pin.getEditText().setText("0000");
+                }
+                else{
+                    TextInputLayout seller_email = (TextInputLayout) findViewById(R.id.existing_seller_email_ET);
+                    TextInputLayout seller_password = (TextInputLayout) findViewById(R.id.existing_seller_password_ET);
+                    TextInputLayout existing_seller_pin = (TextInputLayout) findViewById(R.id.existing_seller_pin_ET);
+                    seller_email.getEditText().setText("islammushtaq@gmail.com");
+                    seller_password.getEditText().setText("qwerty1234");
+                    existing_seller_pin.getEditText().setText("0000");
+                    System.out.println("User not logged in");
+                }
+            }
+        };
 
 
-    myAdapter = new adapter_additem_existingseller(options);
-    myrecyclerView.setHasFixedSize(true);
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-    myrecyclerView.setLayoutManager(layoutManager);
-    myrecyclerView.setAdapter(myAdapter);
-    //recycler view for existing seller add item -c
-
-    //set username for currentuser -0
-    TextInputLayout seller_email = (TextInputLayout) findViewById(R.id.existing_seller_email_ET);
-    TextInputLayout seller_password = (TextInputLayout) findViewById(R.id.existing_seller_password_ET);
-    TextInputLayout existing_seller_pin = (TextInputLayout)findViewById(R.id.existing_seller_pin_ET);
-    seller_email.getEditText().setText("islammushtaq@gmail.com");
-    seller_password.getEditText().setText("qwerty1234");
-    existing_seller_pin.getEditText().setText("0000");
-    //set username for currentuser -1
-}
 
     }
 
@@ -551,33 +466,6 @@ if(mAuth != null){
                     LL1.setVisibility(View.VISIBLE);
                 }
 
-                else if(existing_seller_profile_LL.getVisibility() == View.VISIBLE){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
-                    builder.setTitle("Are You sure");
-                    builder.setMessage("Log-out from this account");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mAuth.signOut();
-                            existing_seller_loginpage_LL.setVisibility(View.VISIBLE);
-                        }
-                    });
-                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    builder.show();
-                }
-
-                else if(existing_seller_all_item_LL.getVisibility() == View.VISIBLE){
-                    existing_seller_profile_LL.setVisibility(View.VISIBLE);
-                    existing_seller_all_item_LL.setVisibility(View.GONE);
-                }
-                else if(existing_seller_addItem_LL.getVisibility()==View.VISIBLE){
-                    Toast.makeText(this, "Press cancel to exit", Toast.LENGTH_SHORT).show();
-                }
 
                 else if(last_page_for_newseller.getVisibility()==View.VISIBLE){
                     last_page_for_newseller.setVisibility(View.GONE);
@@ -691,149 +579,9 @@ if(mAuth != null){
                                     //email-link verification
                                     if(currentuser.isEmailVerified()){
                                         //creating layout existing user profile
-                                        final LinearLayout existing_seller_profile_LL = (LinearLayout) findViewById(R.id.existing_seller_profile_LL);
-                                        existing_seller_progressbar.setVisibility(View.GONE);
-                                        existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                        existing_seller_profile_LL.setVisibility(View.VISIBLE);
-                                        LL1.setVisibility(View.GONE);
-                                        final ProgressBar progressBar_existing_seller_store_photo = (ProgressBar)findViewById(R.id.progressBar_existing_seller_store_photo);
-                                        progressBar_existing_seller_store_photo.setVisibility(View.VISIBLE);
-
-                                        //existing seller other details
-                                        final TextView tv_existing_seller_store_name = (TextView)findViewById(R.id.tv_existing_seller_store_name);
-                                        final TextView tv_existing_seller_store_owner_name = (TextView)findViewById(R.id.tv_existing_seller_store_owner_name);
-                                        final TextView tv_existing_seller_location = (TextView)findViewById(R.id.tv_existing_seller_location);
-                                        final TextView tv_existing_seller_phone = (TextView)findViewById(R.id.tv_existing_seller_phone);
-                                        final TextView tv_existing_seller_pancard = (TextView)findViewById(R.id.tv_existing_seller_pancard);
-                                        final TextView tv_existing_seller_pincode = (TextView)findViewById(R.id.tv_existing_seller_pincode);
-
-                                        Button btn_edit_existing_seller_store_name = (Button) findViewById(R.id.btn_edit_existing_seller_store_name);
-                                        Button btn_edit_existing_seller_store_owner_name = (Button) findViewById(R.id.btn_edit_existing_seller_store_owner_name);
-                                        Button btn_edit_existing_seller_location = (Button) findViewById(R.id.btn_edit_existing_seller_location);
-                                        Button btn_edit_existing_seller_phone = (Button) findViewById(R.id.btn_edit_existing_seller_phone);
-                                        Button btn_existing_seller_password_change = (Button) findViewById(R.id.btn_existing_seller_password_change);
-                                        Button btn_existing_seller_pin_change = (Button) findViewById(R.id.btn_existing_seller_pin_change);
-                                        Button btn_existing_seller_log_out = (Button) findViewById(R.id.btn_existing_seller_log_out);
-                                        final Button btn_edit_existing_seller_information = (Button) findViewById(R.id.btn_edit_existing_seller_information);
-                                        final Button btn_edit_existing_seller_information2 = (Button) findViewById(R.id.btn_edit_existing_seller_information2);
-                                        final CardView cv_existing_seller_information = (CardView)findViewById(R.id.cv_existing_seller_information);
-                                        btn_edit_existing_seller_information.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                cv_existing_seller_information.setVisibility(View.VISIBLE);
-                                                btn_edit_existing_seller_information2.setVisibility(View.VISIBLE);
-                                                btn_edit_existing_seller_information.setVisibility(View.INVISIBLE);
-                                            }
-                                        });
-                                        btn_edit_existing_seller_information2.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                cv_existing_seller_information.setVisibility(View.GONE);
-                                                btn_edit_existing_seller_information2.setVisibility(View.INVISIBLE);
-                                                btn_edit_existing_seller_information.setVisibility(View.VISIBLE);
-                                            }
-                                        });
-                                        final String current_user_email = mAuth.getCurrentUser().getEmail();
-                                        DocumentReference documentReference = fstore.collection("Seller and store personal data").document(current_user_email);
-                                        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                           tv_existing_seller_store_name.setText(value.getString("store name"));
-                                           tv_existing_seller_store_owner_name.setText("owner name:-" + " "+value.getString("store owner name"));
-                                           tv_existing_seller_phone.setText("store contact number:-" + " "+value.getString("store contact number"));
-                                           tv_existing_seller_location.setText("store Location:-" + " "+value.getString("store Location"));
-                                           tv_existing_seller_pancard.setText("Pancard");//+value.getString("store name"));
-                                           tv_existing_seller_pincode.setText("store pincode:-" + " "+value.getString("store pincode"));
-                                            }
-                                        });
-                                        // when existing seller logout button is pressed
-                                        btn_existing_seller_log_out.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                mAuth.signOut();
-                                                existing_seller_profile_LL.setVisibility(View.GONE);
-                                                existing_seller_loginpage_LL.setVisibility(View.VISIBLE);
-                                                last_page_for_newseller.setVisibility(View.GONE);
-                                                new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                new_seller_LL.setVisibility(View.GONE);
-                                                LL1.setVisibility(View.GONE);
-
-                                            }
-                                        });
-                                        // when existing seller logout button is pressed
-                                        //existing seller other details
-                                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Seller and store personal data/" + current_user_email +"/store image.jpg");
-                                        final ImageView existing_seller_store_photo_iv = (ImageView)findViewById(R.id.existing_seller_store_photo_iv);
-                                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                Picasso.get().load(uri).fit().into(existing_seller_store_photo_iv);
-                                                progressBar_existing_seller_store_photo.setVisibility(View.GONE);
-
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(Home.this, "url failed", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                        //timepicker
-                                        final TextView tvw=(TextView)findViewById(R.id.textView1);
-                                        final EditText storeopentime=(EditText) findViewById(R.id.existingseller_store_open_time);
-                                        final EditText storeclosetime = (EditText) findViewById(R.id.existingseller_store_close_time);
-                                        //storeopentime.setInputType(InputType.TYPE_NULL);
-                                        storeopentime.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                final Calendar cldr = Calendar.getInstance();
-                                                int hour = cldr.get(Calendar.HOUR_OF_DAY);
-                                                int minutes = cldr.get(Calendar.MINUTE);
-                                                // time picker dialog
-                                                picker = new TimePickerDialog(Home.this,
-                                                        new TimePickerDialog.OnTimeSetListener() {
-                                                            @Override
-                                                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                                                storeopentime.setText(sHour + ":"+ sMinute);
-                                                                Map<String,String> user = new HashMap<>();
-                                                                user.put("open time" ,storeopentime.getText().toString());
-                                                                fstore.collection("Seller and store personal data").document(current_user_email).collection("store time").document("open time").set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                });
-                                                            }
-                                                        }, hour, minutes, true);
-                                                picker.show();
-                                            }
-                                        });
-                                        storeclosetime.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                final Calendar cldr = Calendar.getInstance();
-                                                int hour = cldr.get(Calendar.HOUR_OF_DAY);
-                                                int minutes = cldr.get(Calendar.MINUTE);
-                                                // time picker dialog
-                                                picker = new TimePickerDialog(Home.this,
-                                                        new TimePickerDialog.OnTimeSetListener() {
-                                                            @Override
-                                                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                                                storeclosetime.setText(sHour + ":"+ sMinute);
-                                                                Map<String,String> userclosetime = new HashMap<>();
-                                                                userclosetime.put("close time" ,storeclosetime.getText().toString());
-                                                                fstore.collection("Seller and store personal data").document(current_user_email).collection("store time").document("close time").set(userclosetime).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                });
-                                                            }
-                                                        }, hour, minutes, true);
-                                                picker.show();
-                                            }
-                                        });
-                                        //timepicker
-                                        //creating layout existing user profile
+                                        Intent i = new Intent(getApplicationContext(),Existing_seller_profile.class);
+                                        startActivity(i);
+                                        //s
                                     }
                                     else{
                                         existing_seller_email.setError("PLease verify your email");
@@ -851,356 +599,8 @@ if(mAuth != null){
                                 }
                             });
                         }
-                        //when existing seller add item is clicked
-                        ImageView existing_seller_Add_item_iv = (ImageView) findViewById(R.id.existing_seller_Add_item_iv);
-                        existing_seller_Add_item_iv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                final ScrollView existing_seller_addItem_LL = (ScrollView) findViewById(R.id.existing_seller_addItem_LL);
-                                final LinearLayout existing_seller_profile_LL = (LinearLayout) findViewById(R.id.existing_seller_profile_LL);
-
-                                AlertDialog.Builder item_name_builder = new AlertDialog.Builder(Home.this,R.style.AlertDialogTheme);
-                                item_name_builder.setTitle("Item Name");
-
-                                // Set up the input
-                                final EditText item_name = new EditText(Home.this);
-                                item_name.setInputType(InputType.TYPE_CLASS_TEXT );
-                                item_name_builder.setView(item_name);
-
-                                item_name_builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String m_Text = item_name.getText().toString().trim();
-                                        final EditText existing_seller_item_name = (EditText) findViewById(R.id.existing_seller_item_name);
-                                        existing_seller_item_name.setText(m_Text);
-
-                                        existing_seller_addItem_LL.setVisibility(View.VISIBLE);
-                                        existing_seller_profile_LL.setVisibility(View.GONE);
-                                        existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                        last_page_for_newseller.setVisibility(View.GONE);
-                                        new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                        existing_seller_all_item_LL.setVisibility(View.GONE);
-                                        new_seller_LL.setVisibility(View.GONE);
-                                        LL1.setVisibility(View.GONE);
 
 
-                                    }
-                                });
-                                item_name_builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                        LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                        existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                        existing_seller_addItem_LL.setVisibility(View.GONE);
-                                        existing_seller_profile_LL.setVisibility(View.GONE);
-                                        existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                        last_page_for_newseller.setVisibility(View.GONE);
-                                        new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                        new_seller_LL.setVisibility(View.GONE);
-                                        LL1.setVisibility(View.GONE);
-                                    }
-                                });
-                                item_name_builder.show();
-                                final ImageView item_imageView1 = (ImageView) findViewById(R.id.item_imageView1);
-                                final ImageView item_imageView2 = (ImageView) findViewById(R.id.item_imageView2);
-                                final ImageView item_imageView3 = (ImageView) findViewById(R.id.item_imageView3);
-                                final ImageView item_imageView4 = (ImageView) findViewById(R.id.item_imageView4);
-
-                                item_imageView1.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        Intent takePictureIntent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                                            startActivityForResult(takePictureIntent, 3000);
-                                        }
-                                    }
-                                });
-
-                                item_imageView2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        Intent takePictureIntent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                                            startActivityForResult(takePictureIntent, 3001);
-                                        }
-                                    }
-                                });
-
-                                item_imageView3.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        Intent takePictureIntent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                                            startActivityForResult(takePictureIntent, 3002);
-                                        }
-                                    }
-                                });
-
-                                item_imageView4.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        Intent takePictureIntent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                                            startActivityForResult(takePictureIntent, 3003);
-                                        }
-                                    }
-                                });
-
-                                //when existing seller upload item image is clicked
-                                //when existing seller add item ok button is clicked
-                                Button btn_existing_seller_add_item_ok = (Button) findViewById(R.id.btn_existing_seller_add_item_ok);
-                                btn_existing_seller_add_item_ok.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        String current_user_email = mAuth.getCurrentUser().getEmail();
-                                        EditText existing_seller_item_name = (EditText) findViewById(R.id.existing_seller_item_name);
-                                        TextInputLayout existing_seller_item_description = findViewById(R.id.existing_seller_item_description);
-                                        TextInputLayout existing_seller_item_cook_time = findViewById(R.id.existing_seller_item_cook_time);
-                                        TextInputLayout existing_seller_item_price = findViewById(R.id.existing_seller_item_price);
-                                        Spinner veg_spinner = (Spinner) findViewById(R.id.veg_spinner);
-                                        Spinner food_category = (Spinner) findViewById(R.id.food_category);
-
-                                        String item_name = existing_seller_item_name.getText().toString().trim();
-                                        if (veg_spinner.getSelectedItemId() == 0 && food_category.getSelectedItemId() == 0){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Veg");
-                                            user.put("category","Drinks");
-
-                                            fstore.collection("Seller and store personal data").document(current_user_email).collection("store all Item")
-                                                    .document(item_name).set(user,SetOptions.merge())
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-                                        else if(veg_spinner.getSelectedItemId() == 0 && food_category.getSelectedItemId() == 1){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Veg");
-                                            user.put("category","Fast Food");
-
-                                            fstore.collection("Seller and store personal data").document(current_user_email).collection("store all Item").document(item_name).set(user,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-                                        else if(veg_spinner.getSelectedItemId() == 0 && food_category.getSelectedItemId() == 2){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Veg");
-                                            user.put("category","Sweets");
-
-                                            fstore.collection("Seller and store personal data").document(current_user_email).collection("store all Item").document(item_name).set(user,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-                                        else if(veg_spinner.getSelectedItemId() == 0 && food_category.getSelectedItemId() == 3){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Veg");
-                                            user.put("category","Bakery");
-
-                                            fstore.collection("Seller and store personal data").document(current_user_email).collection("store all Item").document(item_name).set(user,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-                                        else if(veg_spinner.getSelectedItemId() == 1 && food_category.getSelectedItemId() == 0){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Non-Veg");
-                                            user.put("category","Drinks");
-
-                                            fstore.collection("Seller and store personal data").document(current_user_email).collection("store all Item").document(item_name).set(user,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-
-                                        else if(veg_spinner.getSelectedItemId() == 1 && food_category.getSelectedItemId() == 1){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Non-Veg");
-                                            user.put("category","Fast Food");
-
-                                            fstore.collection("Seller and store personal data").document(current_user_email).collection("store all Item").document(item_name).set(user,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-                                        else if(veg_spinner.getSelectedItemId() == 1 && food_category.getSelectedItemId() == 2){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Non-Veg");
-                                            user.put("category","Sweets");
-
-                                            fstore.collection("Seller and store personal data").document(current_user_email).collection("store all Item").document(item_name).set(user,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-                                        else if(veg_spinner.getSelectedItemId() == 1 && food_category.getSelectedItemId() == 3){
-                                            Map<String,String> user = new HashMap<>();
-                                            user.put("item_name" ,existing_seller_item_name.getText().toString());
-                                            user.put("item_description",existing_seller_item_description.getEditText().getText().toString().trim());
-                                            user.put("item_cooktime",existing_seller_item_cook_time.getEditText().getText().toString().trim());
-                                            user.put("Item_Price",existing_seller_item_price.getEditText().getText().toString().trim());
-                                            user.put("Type","Non-Veg");
-                                            user.put("category","Bakery");
-
-                                            fstore.collection("Seller and store personal data")
-                                                    .document(current_user_email).collection("store all Item")
-                                                    .document(item_name).set(user,SetOptions.merge())
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(Home.this, "ITEM added", Toast.LENGTH_SHORT).show();
-                                                    LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                                    existing_seller_all_item_LL.setVisibility(View.VISIBLE);
-                                                    existing_seller_addItem_LL.setVisibility(View.GONE);
-                                                    existing_seller_profile_LL.setVisibility(View.GONE);
-                                                    existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                                    last_page_for_newseller.setVisibility(View.GONE);
-                                                    new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                                    new_seller_LL.setVisibility(View.GONE);
-                                                    LL1.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        }
-
-                                        else{
-                                            Toast.makeText(Home.this, "Fill select above options)", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    }
-                                });
-                                //when existing seller add item ok button is clicked
-
-                                //when existing seller add item cancel button is clicked
-                                Button btn_existing_seller_add_item_cancel = (Button) findViewById(R.id.btn_existing_seller_add_item_cancel);
-                                btn_existing_seller_add_item_cancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        LinearLayout existing_seller_all_item_LL = (LinearLayout) findViewById(R.id.existing_seller_all_item_LL);
-                                        existing_seller_all_item_LL.setVisibility(View.GONE);
-                                        existing_seller_addItem_LL.setVisibility(View.GONE);
-                                        existing_seller_profile_LL.setVisibility(View.VISIBLE);
-                                        existing_seller_loginpage_LL.setVisibility(View.GONE);
-                                        last_page_for_newseller.setVisibility(View.GONE);
-                                        new_seller_documentUpload_LL.setVisibility(View.GONE);
-                                        new_seller_LL.setVisibility(View.GONE);
-                                        LL1.setVisibility(View.GONE);
-                                    }
-                                });
-                                //when existing seller add item ok button is clicked
-                            }
-                        });
-                        //when existing seller add item is clicked
 
                     }
                 });
@@ -1218,51 +618,8 @@ if(mAuth != null){
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.administer_menu,menu);
-//search -0
-        MenuItem item = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView)item.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                if(existing_seller_all_item_LL.getVisibility()==View.VISIBLE){
-                    startsearch(s);
-                }
-                else {
-                    Toast.makeText(Home.this, "empty search", Toast.LENGTH_SHORT).show();
-                }
 
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if(existing_seller_all_item_LL.getVisibility()==View.VISIBLE){
-                    startsearch(s);
-                }
-                else {
-                    Toast.makeText(Home.this, "empty search", Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-        });
-        //search -1
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void startsearch(String s) {
-        String existing_seller_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Query query1 = fstore
-                .collection("Seller and store personal data")
-                .document(existing_seller_email).collection("store all Item");
-
-        FirestoreRecyclerOptions<model_add_item_existingseller> options =
-        new FirestoreRecyclerOptions.Builder<model_add_item_existingseller>()
-                .setQuery(query1.orderBy("item_name").startAt(s).endAt(s +"\uf8ff"),
-                        model_add_item_existingseller.class)
-                .build();
-
-        myAdapter = new adapter_additem_existingseller(options);
-        myAdapter.startListening();
-        myrecyclerView.setAdapter(myAdapter);
-    }
 }
