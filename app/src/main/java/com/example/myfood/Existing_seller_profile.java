@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +41,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -66,7 +68,6 @@ public class Existing_seller_profile extends AppCompatActivity {
 
     TextInputLayout store_name,store_owner_name,store_Email_address,store_location,store_phone_number,store_password,store_pincode;
     ImageView top_heading_image,iv_store_photo,iv_store_owner_pancard;
-    TextView tv_Zafir,fill_up_the_form_tv;
     ExtendedFloatingActionButton btn_floating_additem;
     Button btn_submit_for_new_seller,btn_submit_for_new_seller_documents,btn_upload_store_photo,btn_upload_owner_pancard_photo;
     LinearLayout location_LL,existing_seller_profile_LL,existing_seller_all_item_LL;
@@ -79,10 +80,10 @@ public class Existing_seller_profile extends AppCompatActivity {
     StorageReference mStorageRef;
     adapter_additem_existingseller myAdapter;
     ImageView existing_seller_Add_item_iv;
-    TextView tvw;
+    TextView tvw,store_id,store_image_link,tv_existing_seller_store_name, tv_existing_seller_store_owner_name, tv_existing_seller_location, tv_existing_seller_phone, tv_existing_seller_pancard, tv_existing_seller_pincode ;
     EditText storeopentime,storeclosetime;
     ImageView existing_seller_store_photo_iv,item_imageView1,item_imageView2,item_imageView3,item_imageView4 ;
-
+    SwitchMaterial display_store;
     ArrayList<String> all_Product_ID = new ArrayList<String>();
     RecyclerView myrecyclerView;
 
@@ -295,6 +296,7 @@ public class Existing_seller_profile extends AppCompatActivity {
         existing_seller_all_item_LL = findViewById(R.id.existing_seller_all_item_LL);
         existing_seller_Add_item_iv = findViewById(R.id.existing_seller_Add_item_iv);
         tvw = findViewById(R.id.textView1);
+        store_id = findViewById(R.id.store_id);
         storeopentime= findViewById(R.id.existingseller_store_open_time);
         storeclosetime = findViewById(R.id.existingseller_store_close_time);
         existing_seller_addItem_LL =  findViewById(R.id.existing_seller_addItem_LL);
@@ -305,7 +307,14 @@ public class Existing_seller_profile extends AppCompatActivity {
         item_imageView3 =  findViewById(R.id.item_imageView3);
         item_imageView4 =  findViewById(R.id.item_imageView4);
         btn_floating_additem = findViewById(R.id.btn_floating_additem);
-
+        display_store = findViewById(R.id.display_store);
+        store_image_link = findViewById(R.id.store_image_link);
+        tv_existing_seller_store_name = findViewById(R.id.tv_existing_seller_store_name);
+        tv_existing_seller_store_owner_name = findViewById(R.id.tv_existing_seller_store_owner_name);
+        tv_existing_seller_location = findViewById(R.id.tv_existing_seller_location);
+        tv_existing_seller_phone = findViewById(R.id.tv_existing_seller_phone);
+        tv_existing_seller_pancard = findViewById(R.id.tv_existing_seller_pancard);
+        tv_existing_seller_pincode = findViewById(R.id.tv_existing_seller_pincode);
 
 
         //setActionBar()
@@ -314,6 +323,53 @@ public class Existing_seller_profile extends AppCompatActivity {
         // finish
 
 
+        //Display your store to the market -0
+        display_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == true){
+                    System.out.println("11");
+                    FirebaseFirestore fstore = FirebaseFirestore.getInstance();
+                    System.out.println("12");
+                    String storeid = store_id.getText().toString();
+                    System.out.println("14");
+                    Map<String,String> user1 = new HashMap<>();
+                    user1.put("store Location" ,tv_existing_seller_location.getText().toString().trim());
+                    user1.put("store contact number",tv_existing_seller_phone.getText().toString().trim());
+                    user1.put("store name",tv_existing_seller_store_name.getText().toString().trim());
+                    user1.put("store_image_link",store_image_link.getText().toString());
+
+                    System.out.println("13");
+                    fstore.collection("Market Store")
+                            .document(storeid)
+                            .set(user1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(Existing_seller_profile.this, "Store is Live ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else {
+                    FirebaseFirestore fstore = FirebaseFirestore.getInstance();
+                    DocumentReference db = fstore.collection("Market Store")
+                            .document(store_id.getText().toString());
+                    db.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(Existing_seller_profile.this, "Store not live", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Existing_seller_profile.this, "something wrong", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+            }
+        });
+
+        //Display your store to the market -1
         //recycler view for existing seller add item -0
         String existing_seller_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Query query = fstore
@@ -347,13 +403,6 @@ public class Existing_seller_profile extends AppCompatActivity {
         progressBar_existing_seller_store_photo.setVisibility(View.VISIBLE);
 
         //existing seller other details
-        final TextView tv_existing_seller_store_name = (TextView)findViewById(R.id.tv_existing_seller_store_name);
-        final TextView tv_existing_seller_store_owner_name = (TextView)findViewById(R.id.tv_existing_seller_store_owner_name);
-        final TextView tv_existing_seller_location = (TextView)findViewById(R.id.tv_existing_seller_location);
-        final TextView tv_existing_seller_phone = (TextView)findViewById(R.id.tv_existing_seller_phone);
-        final TextView tv_existing_seller_pancard = (TextView)findViewById(R.id.tv_existing_seller_pancard);
-        final TextView tv_existing_seller_pincode = (TextView)findViewById(R.id.tv_existing_seller_pincode);
-
         Button btn_edit_existing_seller_store_name = (Button) findViewById(R.id.btn_edit_existing_seller_store_name);
         Button btn_edit_existing_seller_store_owner_name = (Button) findViewById(R.id.btn_edit_existing_seller_store_owner_name);
         Button btn_edit_existing_seller_location = (Button) findViewById(R.id.btn_edit_existing_seller_location);
@@ -391,6 +440,8 @@ public class Existing_seller_profile extends AppCompatActivity {
                 tv_existing_seller_location.setText("store Location:-" + " "+value.getString("store Location"));
                 tv_existing_seller_pancard.setText("Pancard");//+value.getString("store name"));
                 tv_existing_seller_pincode.setText("store pincode:-" + " "+value.getString("store pincode"));
+                store_id.setText(value.getString("Store_ID"));
+                store_image_link.setText("img-link-"+value.getString("store_photo_link"));
             }
         });
         // when existing seller logout button is pressed

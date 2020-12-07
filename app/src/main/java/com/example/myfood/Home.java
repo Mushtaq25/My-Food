@@ -73,6 +73,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 
 public class Home extends AppCompatActivity {
@@ -92,6 +93,7 @@ public class Home extends AppCompatActivity {
     StorageReference mStorageRef;
     adapter_additem_existingseller myAdapter;
     FirebaseAuth.AuthStateListener mAuthListener;
+    ArrayList<String> all_Store_ID = new ArrayList<String>();
 
     TimePickerDialog picker;
 
@@ -140,7 +142,7 @@ public class Home extends AppCompatActivity {
     //upload seller store photo
     private void upload_store_imageTO_firebase(Uri imageuri) {
         if (mAuth.getCurrentUser() != null) {
-            String email = mAuth.getCurrentUser().getEmail();
+            final String email = mAuth.getCurrentUser().getEmail();
             final StorageReference filename = mStorageRef.child("Seller and store personal data/" + email + "/store image.jpg");
             filename.putFile(imageuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -150,6 +152,12 @@ public class Home extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             Picasso.get().load(uri).fit().into(iv_store_photo);
                             progressbar_store_photo.setVisibility(View.GONE);
+
+                            String item_image_url = String.valueOf(uri);
+                            Map<String,String> user = new HashMap<>();
+                            user.put("store_photo_link",item_image_url);
+                            fstore.collection("Seller and store personal data")
+                                    .document(email).set(user,SetOptions.merge());
                         }
                     });
                 }
@@ -328,7 +336,7 @@ public class Home extends AppCompatActivity {
                                 String store_email = currentUser.getEmail();
 
                                 //write seller personal information into the database
-
+                                String Store_ID = StoreID();
                                 Map<String,String> user = new HashMap<>();
                                 user.put("user-ID",user_ID);
                                 user.put("store name" ,store_name.getEditText().getText().toString().trim());
@@ -337,6 +345,7 @@ public class Home extends AppCompatActivity {
                                 user.put("store Location" ,store_location.getEditText().getText().toString().trim());
                                 user.put("store contact number" ,store_phone_number.getEditText().getText().toString());
                                 user.put("store pincode" ,store_pincode.getEditText().getText().toString().trim());
+                                user.put("Store_ID",Store_ID);
 
                                 fstore.collection("Seller and store personal data").document(store_email).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -382,6 +391,33 @@ public class Home extends AppCompatActivity {
                 else{
                     System.out.println("5");
                 }
+            }
+
+            private String StoreID() {
+                Random random = new Random();
+                String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@$#%*123456789";
+                String s = "";
+                while(s.length() <= 15){
+                    s = s + String.valueOf(alphabet.charAt(random.nextInt(alphabet.length())));
+                }
+
+                int i,count=0;
+                for (i=0;i<=all_Store_ID.size();i++){
+                    if(i == 0){
+                        count = 0;
+                        break;
+                    }
+                    if (all_Store_ID.get(i) == s){
+                        count += 1;
+                    }
+                }
+                if (count == 0){
+                    all_Store_ID.add(s);
+                }
+                else{
+                    StoreID();
+                }
+                return s;
             }
         });
 
