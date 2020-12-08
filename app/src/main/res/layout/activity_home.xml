@@ -16,7 +16,6 @@
         android:id="@+id/existing_seller_loginpage_LL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_bar"
         android:layout_alignParentTop="false"
         android:background="@drawable/lightpinkbackground"
         android:visibility="gone"
@@ -158,7 +157,6 @@
         android:id="@+id/last_page_for_newseller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_bar"
         android:layout_below="@id/LL1"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="1dp"
@@ -221,7 +219,6 @@
         android:id="@+id/new_seller_documentUpload_LL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_bar"
         android:layout_below="@id/LL1"
         android:background="#CEFBF7F7"
         android:orientation="vertical"
@@ -349,7 +346,6 @@
         android:id="@+id/new_seller_LL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_bar"
         android:layout_below="@id/LL1"
         android:background="#CEFBF7F7"
         android:orientation="vertical"
@@ -503,33 +499,6 @@
         </ScrollView>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentBottom="true"
-        android:background="#B7DFC6C6"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/btnhome"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:elevation="10dp"
-            app:srcCompat="@drawable/ic_baseline_home_24" />
-
-        <ImageButton
-            android:id="@+id/btn_user"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:elevation="10dp"
-            app:srcCompat="@drawable/ic_baseline_group_24" />
-
-    </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/LL1"
@@ -665,5 +634,21 @@
         android:textStyle="italic"
         android:visibility="invisible"
         tools:visibility="gone" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frame_container"
+        android:layout_above="@+id/bottom_bar">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_bar"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_bar_nav"
+        android:background="@color/light_grey"/>
 
 </RelativeLayout>

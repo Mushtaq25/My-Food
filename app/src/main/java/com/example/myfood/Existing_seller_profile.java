@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,7 +70,7 @@ public class Existing_seller_profile extends AppCompatActivity {
     TextInputLayout store_name,store_owner_name,store_Email_address,store_location,store_phone_number,store_password,store_pincode;
     ImageView top_heading_image,iv_store_photo,iv_store_owner_pancard;
     ExtendedFloatingActionButton btn_floating_additem;
-    Button btn_submit_for_new_seller,btn_submit_for_new_seller_documents,btn_upload_store_photo,btn_upload_owner_pancard_photo;
+    Button btn_upload_store_photo,btn_upload_owner_pancard_photo;
     LinearLayout location_LL,existing_seller_profile_LL,existing_seller_all_item_LL;
     ScrollView existing_seller_addItem_LL;
     ProgressBar progressBar_newseller,progressBar_store_pancard,progressbar_store_photo;
@@ -235,26 +236,9 @@ public class Existing_seller_profile extends AppCompatActivity {
 
             case R.id.btn_back_Existingseller:
                 if(existing_seller_profile_LL.getVisibility() == View.VISIBLE){
-                AlertDialog.Builder builder = new AlertDialog.Builder(Existing_seller_profile.this);
-                builder.setTitle("Are You sure");
-                builder.setMessage("Log-out from this account");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FirebaseAuth.getInstance().signOut();
-                        Intent i =new Intent(getApplicationContext(),Existing_seller_profile.class);
-                        startActivity(i);
-                        finish();
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                builder.show();
+                    Intent i =new Intent(Existing_seller_profile.this,Home.class);
+                    startActivity(i);
+                    finish();
             }
                 else if(existing_seller_all_item_LL.getVisibility() == View.VISIBLE){
                     existing_seller_profile_LL.setVisibility(View.VISIBLE);
@@ -334,9 +318,9 @@ public class Existing_seller_profile extends AppCompatActivity {
                     String storeid = store_id.getText().toString();
                     System.out.println("14");
                     Map<String,String> user1 = new HashMap<>();
-                    user1.put("store Location" ,tv_existing_seller_location.getText().toString().trim());
-                    user1.put("store contact number",tv_existing_seller_phone.getText().toString().trim());
-                    user1.put("store name",tv_existing_seller_store_name.getText().toString().trim());
+                    user1.put("store_Location" ,tv_existing_seller_location.getText().toString().trim());
+                    user1.put("store_contact number",tv_existing_seller_phone.getText().toString().trim());
+                    user1.put("store_name",tv_existing_seller_store_name.getText().toString().trim());
                     user1.put("store_image_link",store_image_link.getText().toString());
 
                     System.out.println("13");
@@ -397,7 +381,6 @@ public class Existing_seller_profile extends AppCompatActivity {
 
          */
 
-        //final LinearLayout existing_seller_profile_LL = (LinearLayout) findViewById(R.id.existing_seller_profile_LL);
         existing_seller_profile_LL.setVisibility(View.VISIBLE);
         final ProgressBar progressBar_existing_seller_store_photo = (ProgressBar)findViewById(R.id.progressBar_existing_seller_store_photo);
         progressBar_existing_seller_store_photo.setVisibility(View.VISIBLE);
@@ -449,7 +432,7 @@ public class Existing_seller_profile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent i = new Intent(getApplicationContext(),Home.class);
+                Intent i = new Intent(Existing_seller_profile.this,Home.class);
                 startActivity(i);
             }
         });

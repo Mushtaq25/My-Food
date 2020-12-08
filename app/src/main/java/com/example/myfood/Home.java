@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -77,7 +79,7 @@ import java.util.Random;
 
 
 public class Home extends AppCompatActivity {
-    ImageButton btn_home,btn_user,btn_Go;
+    ImageButton btn_Go;
     TextInputLayout store_name,store_owner_name,store_Email_address,store_location,store_phone_number,store_password,store_pincode;
     ImageView top_heading_image,iv_store_photo,iv_store_owner_pancard;
     TextView tv_Not_available,tv_Zafir,fill_up_the_form_tv;
@@ -94,6 +96,8 @@ public class Home extends AppCompatActivity {
     adapter_additem_existingseller myAdapter;
     FirebaseAuth.AuthStateListener mAuthListener;
     ArrayList<String> all_Store_ID = new ArrayList<String>();
+
+    BottomNavigationView bottom_bar;
 
     TimePickerDialog picker;
 
@@ -197,7 +201,6 @@ public class Home extends AppCompatActivity {
         mAuth.removeAuthStateListener(mAuthListener);
 
     }
-
     //private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     //private  CollectionReference collectionReference = db.collection("Seller and store personal data");
 
@@ -206,8 +209,6 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        btn_home = findViewById(R.id.btnhome);
-        btn_user = findViewById(R.id.btn_user);
         btn_Go = findViewById(R.id.btn_Go);
         tv_Zafir = findViewById(R.id.Zafir);
         tv_Not_available = findViewById(R.id.tv_Not_available);
@@ -234,14 +235,41 @@ public class Home extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         progressBar_newseller = findViewById(R.id.progressBar_newseller);progressbar_store_photo = findViewById(R.id.progressbar_store_photo);progressBar_store_pancard = findViewById(R.id.progressBar_store_pancard);
         addListenerOnSpinnerItemSelection();
+        bottom_bar = findViewById(R.id.bottom_bar);
 
         //setActionBar()
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.mytoolbar);
         // finish
 
+//bottom bar -0
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragment_home()).commit();
+        bottom_bar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                Fragment temp = null;
+                switch (item.getItemId()){
+                    case R.id.home :
+                        temp =new fragment_home();
+                        break;
+                    case R.id.explore :
+                        temp =new fragment_explore();
+                        break;
+                    case R.id.carts :
+                        temp =new fragment_shopping_cart();
+                        break;
+                    case R.id.user_account :
+                        temp =new fragment_user_account();
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,temp)
+                        .commit();
 
+                return true;
+            }
+        });
+        //bottom bar -1
 
 //NEW SELLER REGISTRATION
         // upload store front photo
@@ -323,13 +351,12 @@ public class Home extends AppCompatActivity {
                 }
 
                 if (!store_Email_address.getEditText().getText().toString().equals("") && !store_password.getEditText().getText().toString().equals("")&& !store_pincode.getEditText().getText().toString().equals("")&& !store_name.getEditText().getText().toString().equals("")&& !store_owner_name.getEditText().getText().toString().equals("")&& !store_location.getEditText().getText().toString().equals("")) {
-                    System.out.println("2");
+
                     progressBar_newseller.setVisibility(View.VISIBLE);
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Home.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                System.out.println("3");
                                 //Toast.makeText(Home.this, "user created", Toast.LENGTH_SHORT).show();
 
                                 FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -423,15 +450,6 @@ public class Home extends AppCompatActivity {
 
         //create new-seller with email and password when submit button is clicked
 //FINISH (NEW SELLER REGISTRATION)
-        // Pressing Home button start
-        btn_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Home.this,Home.class);
-                startActivity(i);
-            }
-        });
-        // Pressing Home button start
 
 
         // Pressing Go button start
@@ -444,13 +462,13 @@ public class Home extends AppCompatActivity {
                 System.out.println(district.getSelectedItem());
                 if (district.getSelectedItemId() == 0)
                 {
-                    System.out.println("Yes it is ok");
                     tv_Zafir.setVisibility(View.VISIBLE);
                     tv_Not_available.setVisibility(View.INVISIBLE);
+                    Intent i  = new Intent(Home.this,Market.class);
+                    startActivity(i);
 
                 }
                 else {
-                    System.out.println("No it is NO");
                     tv_Not_available.setVisibility(View.VISIBLE);
                     tv_Zafir.setVisibility(View.INVISIBLE);
                 }

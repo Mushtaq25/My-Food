@@ -270,7 +270,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:visibility="visible"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -726,19 +726,16 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
                         android:layout_margin="4dp"
                         android:orientation="horizontal"
-                        >
+                        android:padding="4dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Enabling it your store will become live\n and can be viewed by others"
-                            android:textColor="@color/blue_violet"
                             android:layout_gravity="left"
-                            >
-                        </TextView>
+                            android:text="Enabling it your store will become live\n and can be viewed by others"
+                            android:textColor="@color/blue_violet"></TextView>
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/display_store"
@@ -754,32 +751,30 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_gravity="bottom|center"
+                        android:orientation="vertical"
 
                         >
+
                         <TextView
                             android:id="@+id/store_id"
                             android:layout_width="match_parent"
-                            android:text="abc"
                             android:layout_height="wrap_content"
-                            android:textColorLink="@color/light_grey"
+                            android:text="abc"
                             android:textColor="@color/blue_violet"
-                            >
-                        </TextView>
+                            android:textColorLink="@color/light_grey"></TextView>
+
                         <TextView
                             android:id="@+id/store_image_link"
                             android:layout_width="match_parent"
-                            android:text="abc"
-                            android:visibility="gone"
                             android:layout_height="wrap_content"
-                            android:textColorLink="@color/light_grey"
+                            android:text="abc"
                             android:textColor="@color/blue_violet"
-                            >
-                        </TextView>
+                            android:textColorLink="@color/light_grey"
+                            android:visibility="gone"></TextView>
                     </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
 
             </LinearLayout>
