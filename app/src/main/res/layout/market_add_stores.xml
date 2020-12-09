@@ -22,14 +22,18 @@
                 android:id="@+id/iv_market_storephoto"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:layout_margin="3dp"
+                android:padding="5dp"
                 app:srcCompat="@drawable/ic_baseline_center_focus_weak_24" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
+                android:layout_margin="2dp"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/market_store_name"
@@ -38,14 +42,15 @@
                     android:layout_marginTop="-30dp"
                     android:text="TextView"
                     android:textColor="@color/black"
-                    android:textSize="24dp"/>
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/market_store_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

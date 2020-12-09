@@ -117,6 +117,7 @@ public class adapter_additem_existingseller extends FirestoreRecyclerAdapter<mod
                     user.put("imagelinkitem2",model.getImagelinkitem2());
                     user.put("imagelinkitem3",model.getImagelinkitem3());
                     user.put("imagelinkitem4",model.getImagelinkitem4());
+                    user.put("Product_Id",p_id);
 
                     fstore.collection("Market items")
                             .document(p_id)

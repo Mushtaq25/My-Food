@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,6 +51,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -243,6 +246,7 @@ public class Home extends AppCompatActivity {
         // finish
 
 //bottom bar -0
+
         //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragment_home()).commit();
         bottom_bar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -464,8 +468,9 @@ public class Home extends AppCompatActivity {
                 {
                     tv_Zafir.setVisibility(View.VISIBLE);
                     tv_Not_available.setVisibility(View.INVISIBLE);
-                    Intent i  = new Intent(Home.this,Market.class);
+                    /*Intent i  = new Intent(Home.this,Market.class);
                     startActivity(i);
+                    */
 
                 }
                 else {

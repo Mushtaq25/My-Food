@@ -217,7 +217,7 @@ public class Existing_seller_profile extends AppCompatActivity {
         String existing_seller_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Query query1 = fstore
                 .collection("Seller and store personal data")
-                .document("islammushtaq@gmail.com").collection("store all Item");
+                .document(existing_seller_email).collection("store all Item");
 
         FirestoreRecyclerOptions<model_add_item_existingseller> options =
                 new FirestoreRecyclerOptions.Builder<model_add_item_existingseller>()
@@ -312,18 +312,15 @@ public class Existing_seller_profile extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked == true){
-                    System.out.println("11");
                     FirebaseFirestore fstore = FirebaseFirestore.getInstance();
-                    System.out.println("12");
                     String storeid = store_id.getText().toString();
-                    System.out.println("14");
+
                     Map<String,String> user1 = new HashMap<>();
                     user1.put("store_Location" ,tv_existing_seller_location.getText().toString().trim());
                     user1.put("store_contact number",tv_existing_seller_phone.getText().toString().trim());
                     user1.put("store_name",tv_existing_seller_store_name.getText().toString().trim());
                     user1.put("store_image_link",store_image_link.getText().toString());
 
-                    System.out.println("13");
                     fstore.collection("Market Store")
                             .document(storeid)
                             .set(user1).addOnSuccessListener(new OnSuccessListener<Void>() {

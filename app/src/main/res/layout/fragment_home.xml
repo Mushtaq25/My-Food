@@ -3,5 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#009688"
-    tools:context=".fragment_home" />
+    android:background="@drawable/lightpinkbackground"
+    tools:context=".fragment_home" >
+
+<ScrollView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:scrollbars="vertical"
+android:layout_centerInParent="true">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="2dp"
+    android:layout_margin="5dp">
+    <TextView
+        android:id="@+id/tvf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stores"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_margin="8dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/market_store_recycler_view1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="5dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
+</ScrollView>
+
+</FrameLayout>

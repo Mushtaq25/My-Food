@@ -3,5 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ED1212"
-    tools:context=".fragment_explore" />
+    android:background="@drawable/lightpinkbackground"
+    tools:context=".fragment_explore">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/market_all_item_recyclerview"
+            />
+    </LinearLayout>
+</FrameLayout>
